@@ -12,7 +12,7 @@ df = data.frame(eval, pct_3, fg_pct, yr)
 
 # Create the three plots. Manual ylimits, no xlabels except plot3, and I prefer the line and points
 plot1 = ggplot(data=df, aes(x=yr, y=pct_3)) + geom_line(aes(group=1)) + geom_point() +
-  ylim(20, 40) +  
+  ylim(20, 40) +
   theme(axis.title.x = element_blank(), axis.title.y = element_blank(),
         axis.text.x = element_blank())
 
@@ -28,7 +28,10 @@ plot3 = ggplot(data=df, aes(x=yr, y=eval)) + geom_line(aes(group=1)) + geom_poin
 # Draw the three plots aligned vertically, with equal relative heights. 
 # Added 4th blank row because I want them to easily fit onto the page.
 # Made some tweaks iteratively until I liked the positioning of the titles.
-cowplot::plot_grid(plot1, plot2, plot3, 
+p = cowplot::plot_grid(plot1, plot2, plot3, 
                    labels=c("% of shots taken from 3pt range", "      % of all shots made", "Expected points per 100 shots"), 
                    label_size = 10, vjust=2.4, label_fontface = 4,
                    align = "v", ncol = 1, rel_heights = c(0.5, 0.5, 0.5), nrow=4)
+
+title = ggdraw() + draw_label("Evolution of shot selection in NBA over last decade", fontface='bold')
+plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)) 
